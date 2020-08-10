@@ -2,28 +2,24 @@
 
 <h1>Posts</h1>
 
-<table>
-  <thead>
-    <tr>
-      <th>Title</th>
-      <th>Body</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @posts.each do |post| %>
-      <tr>
-        <td><%= post.title %></td>
-        <td><%= post.body %></td>
-        <td><%= link_to 'Show', post %></td>
-        <td><%= link_to 'Edit', edit_post_path(post) %></td>
-        <td><%= link_to 'Destroy', post, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
+<% @posts.each do |post| %>
+  <div class="card">
+  <h5 class="card-header"><%= post.title %></h5>
+  <div class="card-body">
+    <h5 class="card-title"><%= post.title %></h5>
+    <p class="card-text"><%= post.body %></p>
+    <%= link_to 'Show', post, class: "btn btn-primary", style: "margin-left:5px;" %>
+    <% if can? :read, @post %>
+      <%= link_to 'Edit', edit_post_path(post) , class: "btn btn-warning", style: "margin-left:5px;" %>
+      <%= link_to 'Destroy', post, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger", style: "margin-left:5px;" %>
     <% end %>
-  </tbody>
-</table>
-
+    <br>
+  </div>
+</div>
+<% end %>
 <br>
-
-<%= link_to 'New Post', new_post_path %>
+<%= pagy_bootstrap_nav(@pagy).html_safe %>
+<br>
+<% if can? :read, @post %>
+     <%= link_to 'New Post', new_post_path, class: "btn btn-success"%>
+<% end %>
